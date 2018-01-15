@@ -2,29 +2,27 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tool="http://schemas.android.com/tools"
+    android:id="@+id/dialogLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/dialogLayout"
     android:layout_gravity="center"
     android:background="@color/background">
 
 
     <View
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/cardView"
-        android:background="@drawable/bg_dialog"
         android:layout_width="220dp"
         android:layout_height="150dp"
-        card_view:layout_constraintBottom_toBottomOf="parent"
-        card_view:layout_constraintLeft_toLeftOf="parent"
-        card_view:layout_constraintRight_toRightOf="parent"
-        card_view:layout_constraintTop_toTopOf="parent"/>
+        android:background="@drawable/bg_dialog"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:gravity="center"
@@ -69,6 +67,7 @@
         android:textColor="@android:color/holo_blue_dark"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/cardView"
         app:layout_constraintStart_toStartOf="@+id/cardView"
         tool:text="Negative"/>
@@ -84,6 +83,7 @@
         android:textColor="@android:color/holo_blue_dark"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/cardView"
         app:layout_constraintEnd_toEndOf="@+id/cardView"
         tool:text="Positive"/>

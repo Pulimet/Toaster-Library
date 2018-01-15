@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void showToast() {
-        Toaster.showToast(this, "This is our awesome toast");
+        Toaster.showToast(this, "This is our awesome toast", 300, 500);
     }
 
     private void showDialog() {
@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity
                 .setText("Text of the dialog here")
                 .setPositive("OK")
                 .setNegative("CANCEL")
+                .setAnimationDuration(300)
                 .setCallBack(this).build();
         mToaster.show();
     }

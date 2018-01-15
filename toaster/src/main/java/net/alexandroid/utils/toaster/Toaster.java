@@ -31,6 +31,7 @@ public class Toaster implements View.OnClickListener {
     private WeakReference<DialogCallback> mCallback;
 
     private int mDefaultLayout = R.layout.custom_toast_dialog;
+    private int mAnimationDuration;
 
     // Toast
     public static void showToast(Context context, String msg) {
@@ -89,10 +90,17 @@ public class Toaster implements View.OnClickListener {
 
         ((TextView) mLayout.findViewById(R.id.title)).setText(mTitle);
         ((TextView) mLayout.findViewById(R.id.text)).setText(mText);
-        btnPositive.setText(mPositive);
-        btnNegative.setText(mNegative);
+        if (mPositive != null) {
+            btnPositive.setVisibility(View.VISIBLE);
+            btnPositive.setText(mPositive);
+        }
+        if (mNegative != null) {
+            btnNegative.setVisibility(View.VISIBLE);
+            btnNegative.setText(mNegative);
+        }
 
         mLayout.setOnClickListener(this);
+        mLayout.findViewById(R.id.cardView).setOnClickListener(this);
         btnPositive.setOnClickListener(this);
         btnNegative.setOnClickListener(this);
 
@@ -103,7 +111,7 @@ public class Toaster implements View.OnClickListener {
         final ContentFrameLayout ContentFrameLayout = activity.findViewById(android.R.id.content);
         ContentFrameLayout.addView(mLayout);
 
-        ObjectAnimator.ofFloat(mLayout, "alpha", 0f, 1f).setDuration(DIALOG_ANIM_DURATION).start();
+        ObjectAnimator.ofFloat(mLayout, "alpha", 0f, 1f).setDuration(mAnimationDuration).start();
     }
 
     public void hide() {
@@ -114,7 +122,7 @@ public class Toaster implements View.OnClickListener {
         sVisible = false;
         final ContentFrameLayout contentFrameLayout = activity.findViewById(android.R.id.content);
         ObjectAnimator fadeOut = ObjectAnimator.ofFloat(mLayout, "alpha", 1f, 0f);
-        fadeOut.setDuration(DIALOG_ANIM_DURATION);
+        fadeOut.setDuration(mAnimationDuration);
         fadeOut.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -159,6 +167,7 @@ public class Toaster implements View.OnClickListener {
         public Builder(Activity activity) {
             mToaster = new Toaster();
             mToaster.mWeakActivity = new WeakReference<>(activity);
+            mToaster.mAnimationDuration = DIALOG_ANIM_DURATION;
         }
 
         public Builder setTitle(String title) {
@@ -188,6 +197,11 @@ public class Toaster implements View.OnClickListener {
 
         public Builder setCustomLayout(int customLayout) {
             mToaster.mDefaultLayout = customLayout;
+            return this;
+        }
+
+        public Builder setAnimationDuration(int animationDuration) {
+            mToaster.mAnimationDuration = animationDuration;
             return this;
         }
 
