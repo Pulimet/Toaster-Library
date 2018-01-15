@@ -1,14 +1,11 @@
 package net.alexandroid.utils.toaster;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ContentFrameLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,13 +14,27 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        findViewById(R.id.btnShowToast).setOnClickListener(this);
+        findViewById(R.id.btnShowDialog).setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btnShowToast:
+                showToast();
+                break;
+            case R.id.btnShowDialog:
+                showDialog();
+                break;
+        }
+    }
+
+    private void showToast() {
+
+    }
+
+    private void showDialog() {
+
     }
 }
