@@ -1,5 +1,6 @@
 package net.alexandroid.utils.toasterapp;
 
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -7,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 
 import net.alexandroid.utils.toaster.Toaster;
-
 
 public class MainActivity extends AppCompatActivity
         implements View.OnClickListener, Toaster.DialogCallback {
@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity
                 .setPositive("OK")
                 .setNegative("CANCEL")
                 .setAnimationDuration(300)
+                .setCustomLayout(R.layout.custom)
                 .setCallBack(this).build();
         mToaster.show();
     }
