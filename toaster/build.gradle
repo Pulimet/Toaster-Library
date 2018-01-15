@@ -1,5 +1,29 @@
 apply plugin: 'com.android.library'
 
+ext {
+    bintrayRepo = 'utils'
+    bintrayName = 'toaster'
+
+    publishedGroupId = 'net.alexandroid.utils'
+    libraryName = 'Toaster'
+    artifact = 'toaster'
+
+    libraryDescription = 'Indicators is custom view that indicates selected page'
+
+    siteUrl = 'https://github.com/Pulimet/Toaster-Library'
+    gitUrl = 'https://github.com/Pulimet/Toaster-Library.git'
+
+    libraryVersion = '1.1'
+
+    developerId = 'pulimet'
+    developerName = 'Alexey Korolev'
+    developerEmail = 'korolev2009@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
 android {
     compileSdkVersion 27
 
@@ -22,3 +46,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
+
+apply from: 'installv1.gradle'
+apply from: 'bintrayv1.gradle'
+
