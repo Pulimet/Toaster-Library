@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">toaster</string>
+    <string name="fake_title">Fake title</string>
+    <string name="fake_text">Some fake text is here...</string>
 </resources>
