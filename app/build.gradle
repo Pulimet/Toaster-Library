@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "net.alexandroid.utils.toaster"
+        applicationId "net.alexandroid.utils.toasterapp"
         minSdkVersion 16
         targetSdkVersion 27
         versionCode 1
@@ -23,5 +23,10 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'com.android.support:design:27.0.2'
 
+/*    compile (project(':toaster')){
+        exclude group: 'com.android.support.appcompat'
+    }*/
+
     compile project(':toaster')
+
 }

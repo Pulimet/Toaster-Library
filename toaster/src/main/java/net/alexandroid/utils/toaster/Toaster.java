@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.content.Context;
 import android.support.v7.widget.ContentFrameLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +12,13 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import java.lang.ref.WeakReference;
+
 public class Toaster implements View.OnClickListener {
 
-    private View mLayout;
+    private static final int TOAST_ANIM_DURATION = 800;
+    private static final int TOAST_TIME_TO_SHOW = 700;
+    public static final int DIALOG_ANIM_DURATION = 600;
     private static boolean sVisible;
 
     private String mTitle;
@@ -21,13 +26,26 @@ public class Toaster implements View.OnClickListener {
     private String mPositive;
     private String mNegative;
 
+    private WeakReference<Activity> mWeakActivity;
+    private View mLayout;
     private DialogCallback mCallback;
 
     private int mDefaultLayout = R.layout.custom_toast_dialog;
 
-    public static void showToast(String msg, Activity activity) {
-        LayoutInflater inflater = activity.getLayoutInflater();
-        final View layout = inflater.inflate(R.layout.custom_toast, null);
+    // Toast
+    public static void showToast(Activity activity, String msg) {
+        showToast(activity, msg, TOAST_ANIM_DURATION, TOAST_TIME_TO_SHOW);
+    }
+
+    public static void showToast(Context context, String msg, int animationDuration, int visibleDuration) {
+        if (animationDuration < 0) {
+            throw new IllegalArgumentException("Animation duration can't be negative");
+        }
+        if (visibleDuration < 100) {
+            throw new IllegalArgumentException("Visible duration must be more then 99ms");
+        }
+
+        final View layout = LayoutInflater.from(context).inflate(R.layout.custom_toast, null);
         TextView text = layout.findViewById(R.id.text);
         text.setText(msg);
 
@@ -35,14 +53,14 @@ public class Toaster implements View.OnClickListener {
                 FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
         layout.setLayoutParams(params);
 
-        final ContentFrameLayout contentFrameLayout = activity.findViewById(android.R.id.content);
+        final ContentFrameLayout contentFrameLayout = ((Activity) context).findViewById(android.R.id.content);
         contentFrameLayout.addView(layout);
 
-        ObjectAnimator.ofFloat(layout, "alpha", 0f, 1f).setDuration(800).start();
+        ObjectAnimator.ofFloat(layout, "alpha", 0f, 1f).setDuration(TOAST_ANIM_DURATION).start();
 
         ObjectAnimator fadeOut = ObjectAnimator.ofFloat(layout, "alpha", 1f, 0f);
-        fadeOut.setStartDelay(1500);
-        fadeOut.setDuration(800);
+        fadeOut.setStartDelay(animationDuration + visibleDuration);
+        fadeOut.setDuration(animationDuration);
         fadeOut.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -58,14 +76,15 @@ public class Toaster implements View.OnClickListener {
 
     }
 
-    public void show(Activity activity) {
-        if (sVisible) {
+    public void show() {
+        Activity activity = mWeakActivity.get();
+        if (sVisible || activity == null) {
             return;
         }
+
         sVisible = true;
 
-        LayoutInflater inflater = activity.getLayoutInflater();
-        mLayout = inflater.inflate(mDefaultLayout, null);
+        mLayout = LayoutInflater.from(activity).inflate(mDefaultLayout, null);
         Button btnPositive = mLayout.findViewById(R.id.btnPositive);
         Button btnNegative = mLayout.findViewById(R.id.btnNegative);
 
@@ -85,16 +104,18 @@ public class Toaster implements View.OnClickListener {
         final ContentFrameLayout ContentFrameLayout = activity.findViewById(android.R.id.content);
         ContentFrameLayout.addView(mLayout);
 
-        ObjectAnimator.ofFloat(mLayout, "alpha", 0f, 1f).setDuration(600).start();
+        ObjectAnimator.ofFloat(mLayout, "alpha", 0f, 1f).setDuration(DIALOG_ANIM_DURATION).start();
     }
 
-    public void hide(Activity activity) {
+    public void hide() {
+        Activity activity = mWeakActivity.get();
+        if (activity == null) {
+            return;
+        }
         sVisible = false;
-
         final ContentFrameLayout contentFrameLayout = activity.findViewById(android.R.id.content);
-
         ObjectAnimator fadeOut = ObjectAnimator.ofFloat(mLayout, "alpha", 1f, 0f);
-        fadeOut.setDuration(600);
+        fadeOut.setDuration(DIALOG_ANIM_DURATION);
         fadeOut.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -111,10 +132,10 @@ public class Toaster implements View.OnClickListener {
         }
         int i = view.getId();
         if (i == R.id.btnPositive) {
+            hide();
             mCallback.onPositiveClick();
-        } else if (i == R.id.btnNegative) {
-            mCallback.onNegativeClick();
-        } else if (i == R.id.dialogLayout) {
+        } else if (i == R.id.btnNegative || i == R.id.dialogLayout) {
+            hide();
             mCallback.onNegativeClick();
         }
     }
@@ -123,12 +144,22 @@ public class Toaster implements View.OnClickListener {
         return sVisible;
     }
 
+    public boolean onBackPressed() {
+        if (sVisible) {
+            hide();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     public static class Builder {
 
         private final Toaster mToaster;
 
-        public Builder() {
+        public Builder(Activity activity) {
             mToaster = new Toaster();
+            mToaster.mWeakActivity = new WeakReference<>(activity);
         }
 
         public Builder setTitle(String title) {
