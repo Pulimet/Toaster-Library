@@ -28,7 +28,7 @@ public class Toaster implements View.OnClickListener {
 
     private WeakReference<Activity> mWeakActivity;
     private View mLayout;
-    private DialogCallback mCallback;
+    private WeakReference<DialogCallback> mCallback;
 
     private int mDefaultLayout = R.layout.custom_toast_dialog;
 
@@ -69,7 +69,6 @@ public class Toaster implements View.OnClickListener {
         });
         fadeOut.start();
     }
-
 
     // Dialog
     private Toaster() {
@@ -133,15 +132,15 @@ public class Toaster implements View.OnClickListener {
         int i = view.getId();
         if (i == R.id.btnPositive) {
             hide();
-            mCallback.onPositiveClick();
+            if (mCallback.get() != null) {
+                mCallback.get().onPositiveClick();
+            }
         } else if (i == R.id.btnNegative || i == R.id.dialogLayout) {
             hide();
-            mCallback.onNegativeClick();
+            if (mCallback.get() != null) {
+                mCallback.get().onNegativeClick();
+            }
         }
-    }
-
-    public boolean isVisible() {
-        return sVisible;
     }
 
     public boolean onBackPressed() {
@@ -183,7 +182,7 @@ public class Toaster implements View.OnClickListener {
         }
 
         public Builder setCallBack(DialogCallback callback) {
-            mToaster.mCallback = callback;
+            mToaster.mCallback = new WeakReference<>(callback);
             return this;
         }
 
