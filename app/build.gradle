@@ -25,4 +25,6 @@ dependencies {
 
     compile project(':toaster')
 
+    //implementation 'net.alexandroid.utils:toaster:1.1'
+
 }

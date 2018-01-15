@@ -33,8 +33,8 @@ public class Toaster implements View.OnClickListener {
     private int mDefaultLayout = R.layout.custom_toast_dialog;
 
     // Toast
-    public static void showToast(Activity activity, String msg) {
-        showToast(activity, msg, TOAST_ANIM_DURATION, TOAST_TIME_TO_SHOW);
+    public static void showToast(Context context, String msg) {
+        showToast(context, msg, TOAST_ANIM_DURATION, TOAST_TIME_TO_SHOW);
     }
 
     public static void showToast(Context context, String msg, int animationDuration, int visibleDuration) {
