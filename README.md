@@ -62,6 +62,18 @@ public void onBackPressed() {
 
 ```
 
+* Custom layout for dialog:
+
+<img align="right" width ="300" src="https://raw.githubusercontent.com/Pulimet/Toaster-Library/master/art/third.png">
+
+```java
+ mToaster = new Toaster.Builder(this)
+.setCustomLayout(R.layout.custom)
+...
+```
+
+https://github.com/Pulimet/Toaster-Library/blob/master/app/src/main/res/layout/custom.xml
+
  <br>  <br>  <br> 
 # License
 
