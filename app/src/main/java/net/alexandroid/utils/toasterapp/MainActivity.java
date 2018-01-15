@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        if (mToaster.onBackPressed()) {
+        if (mToaster == null || mToaster.onBackPressed()) {
             super.onBackPressed();
         }
     }
