@@ -39,6 +39,11 @@ public class Toaster implements View.OnClickListener {
     }
 
     public static void showToast(Context context, String msg, int animationDuration, int visibleDuration) {
+        showToast(context, msg, animationDuration, visibleDuration, R.layout.custom_toast);
+    }
+
+    public static void showToast(Context context, String msg, int animationDuration, int visibleDuration, int layoutRes) {
+        final View layout = LayoutInflater.from(context).inflate(layoutRes, null);
         if (animationDuration < 0) {
             throw new IllegalArgumentException("Animation duration can't be negative");
         }
@@ -46,7 +51,6 @@ public class Toaster implements View.OnClickListener {
             throw new IllegalArgumentException("Visible duration must be more then 99ms");
         }
 
-        final View layout = LayoutInflater.from(context).inflate(R.layout.custom_toast, null);
         TextView text = layout.findViewById(R.id.text);
         text.setText(msg);
 

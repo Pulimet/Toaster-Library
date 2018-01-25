@@ -3,4 +3,6 @@
     <string name="action_settings">Settings</string>
     <string name="show_toast">Show Toast</string>
     <string name="show_dialog">Show dialog</string>
+    <string name="custom_toast">Custom toast</string>
+    <string name="custom_dialog">Custom dialog</string>
 </resources>

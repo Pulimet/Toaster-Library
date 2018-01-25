@@ -23,6 +23,8 @@ public class MainActivity extends AppCompatActivity
 
         findViewById(R.id.btnShowToast).setOnClickListener(this);
         findViewById(R.id.btnShowDialog).setOnClickListener(this);
+        findViewById(R.id.btnShowCustomToast).setOnClickListener(this);
+        findViewById(R.id.btnShowCustomDialog).setOnClickListener(this);
     }
 
     @Override
@@ -34,11 +36,20 @@ public class MainActivity extends AppCompatActivity
             case R.id.btnShowDialog:
                 showDialog();
                 break;
+            case R.id.btnShowCustomToast:
+                showCustomToast();
+                break;
+            case R.id.btnShowCustomDialog:
+                showCustomDialog();
+                break;
         }
     }
 
     private void showToast() {
-        Toaster.showToast(this, "This is our awesome toast", 300, 500);
+        Toaster.showToast(this, "This is our awesome toast");
+    }
+    private void showCustomToast() {
+        Toaster.showToast(this, "This is our awesome toast", 300, 500, R.layout.custom_t);
     }
 
     private void showDialog() {
@@ -48,7 +59,17 @@ public class MainActivity extends AppCompatActivity
                 .setPositive("OK")
                 .setNegative("CANCEL")
                 .setAnimationDuration(300)
-                .setCustomLayout(R.layout.custom)
+                .setCallBack(this).build();
+        mToaster.show();
+    }
+    private void showCustomDialog() {
+        mToaster = new Toaster.Builder(this)
+                .setTitle("Dialog title")
+                .setText("Text of the dialog here")
+                .setPositive("OK")
+                .setNegative("CANCEL")
+                .setAnimationDuration(300)
+                .setCustomLayout(R.layout.custom_d)
                 .setCallBack(this).build();
         mToaster.show();
     }

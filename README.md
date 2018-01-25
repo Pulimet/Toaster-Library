@@ -22,6 +22,7 @@ dependencies {
 
 
 # Release notes
+* 1.3 - Custom toast layout support
 * 1.2 - Basic enhancements 
 
 
@@ -35,6 +36,14 @@ dependencies {
  // 300 - animation duration, 500 - visible duration
  Toaster.showToast(this, "This is our awesome toast", 300, 500);  
 ```
+
+* Custom layout for toast:
+
+```java
+ Toaster.showToast(this, "This is our awesome toast", 300, 500, R.layout.custom_t);
+```
+
+https://github.com/Pulimet/Toaster-Library/blob/master/app/src/main/res/layout/custom_d.xml
 
 
 * Dialog:
@@ -73,7 +82,7 @@ public void onBackPressed() {
 ...
 ```
 
-https://github.com/Pulimet/Toaster-Library/blob/master/app/src/main/res/layout/custom.xml
+https://github.com/Pulimet/Toaster-Library/blob/master/app/src/main/res/layout/custom_d.xml
 
  <br>  <br>  <br> 
 # License

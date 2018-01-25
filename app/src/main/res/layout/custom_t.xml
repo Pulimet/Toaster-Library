@@ -1,0 +1,20 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:id="@+id/custom_toast_container"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="@color/background"
+             android:fitsSystemWindows="true">
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_toasty"
+        android:padding="20dp"
+        android:textColor="#FFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:text="@string/fake_text"/>
+</FrameLayout>
