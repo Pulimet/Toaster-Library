@@ -5,6 +5,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
+import android.provider.Settings;
 import android.support.v7.widget.ContentFrameLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,18 +63,42 @@ public class Toaster implements View.OnClickListener {
         final ContentFrameLayout contentFrameLayout = ((Activity) context).findViewById(android.R.id.content);
         contentFrameLayout.addView(layout);
 
-        ObjectAnimator.ofFloat(layout, "alpha", 0f, 1f).setDuration(TOAST_ANIM_DURATION).start();
+        float systemAnimationsDuration = getSystemAnimationsDuration(context); // 0.0 => 1.0
+        int animDuration = Math.round(animationDuration * systemAnimationsDuration);
 
-        ObjectAnimator fadeOut = ObjectAnimator.ofFloat(layout, "alpha", 1f, 0f);
-        fadeOut.setStartDelay(animationDuration + visibleDuration);
-        fadeOut.setDuration(animationDuration);
-        fadeOut.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                contentFrameLayout.removeView(layout);
-            }
-        });
-        fadeOut.start();
+        ObjectAnimator.ofFloat(layout, "alpha", 0f, 1f)
+                .setDuration(animDuration)
+                .start();
+
+        if (systemAnimationsDuration > 0) {
+            ObjectAnimator fadeOut = ObjectAnimator.ofFloat(layout, "alpha", 1f, 0f);
+            fadeOut.setStartDelay(animDuration + visibleDuration);
+            fadeOut.setDuration(animDuration);
+            fadeOut.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    contentFrameLayout.removeView(layout);
+                }
+            });
+            fadeOut.start();
+        } else{
+            layout.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    contentFrameLayout.removeView(layout);
+                }
+            }, visibleDuration);
+        }
+    }
+
+    private static float getSystemAnimationsDuration(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            return Settings.Global.getFloat(
+                    context.getContentResolver(), Settings.Global.ANIMATOR_DURATION_SCALE, 0);
+        } else {
+            return Settings.System.getFloat(
+                    context.getContentResolver(), Settings.System.ANIMATOR_DURATION_SCALE, 0);
+        }
     }
 
     // Dialog
