@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    compile 'net.alexandroid.utils:toaster:1.4'
+    compile 'net.alexandroid.utils:toaster:1.5'
 }
 ```
 
@@ -22,6 +22,7 @@ dependencies {
 
 
 # Release notes
+* 1.5 - Bug fix
 * 1.4 - Handle animation off issue (Thanks to [@kamilj](https://github.com/kamilj))
 * 1.3 - Custom toast layout support
 * 1.2 - Basic enhancements 

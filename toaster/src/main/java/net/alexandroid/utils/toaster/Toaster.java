@@ -81,7 +81,7 @@ public class Toaster implements View.OnClickListener {
                 }
             });
             fadeOut.start();
-        } else{
+        } else {
             layout.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -179,6 +179,7 @@ public class Toaster implements View.OnClickListener {
                 mCallback.get().onNegativeClick();
             }
         }
+        mCallback = null;
     }
 
     public boolean onBackPressed() {
