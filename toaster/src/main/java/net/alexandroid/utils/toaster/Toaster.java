@@ -9,6 +9,7 @@ import android.os.Build;
 import android.provider.Settings;
 import android.support.v7.widget.ContentFrameLayout;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -16,11 +17,13 @@ import android.widget.TextView;
 
 import java.lang.ref.WeakReference;
 
-public class Toaster implements View.OnClickListener {
+public class Toaster implements
+        View.OnClickListener,
+        View.OnTouchListener {
 
-    private static final int TOAST_ANIM_DURATION = 800;
+    private static final int TOAST_ANIM_DURATION = 600;
     private static final int TOAST_TIME_TO_SHOW = 700;
-    public static final int DIALOG_ANIM_DURATION = 600;
+    public static final int DIALOG_ANIM_DURATION = 500;
     private static boolean sVisible;
 
     private String mTitle;
@@ -129,8 +132,8 @@ public class Toaster implements View.OnClickListener {
             btnNegative.setText(mNegative);
         }
 
-        mLayout.setOnClickListener(this);
-        mLayout.findViewById(R.id.cardView).setOnClickListener(this);
+        mLayout.findViewById(R.id.cardView).setOnTouchListener(this);
+        mLayout.setOnTouchListener(this);
         btnPositive.setOnClickListener(this);
         btnNegative.setOnClickListener(this);
 
@@ -162,24 +165,47 @@ public class Toaster implements View.OnClickListener {
         fadeOut.start();
     }
 
+    public static boolean isVisible() {
+        return sVisible;
+    }
+
     @Override
     public void onClick(View view) {
         if (mCallback == null) {
             return;
         }
-        int i = view.getId();
-        if (i == R.id.btnPositive) {
+        int id = view.getId();
+        if (id == R.id.btnPositive) {
             hide();
             if (mCallback.get() != null) {
                 mCallback.get().onPositiveClick();
             }
-        } else if (i == R.id.btnNegative || i == R.id.dialogLayout) {
+        } else if (id == R.id.btnNegative) {
             hide();
             if (mCallback.get() != null) {
                 mCallback.get().onNegativeClick();
             }
         }
         mCallback = null;
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if (mCallback == null) {
+            return true;
+        }
+
+        int id = v.getId();
+        if (id == R.id.cardView) {
+            return true;
+        } else if (id == R.id.dialogLayout) {
+            mCallback.get().onOutOfTheBoundClick();
+            mCallback = null;
+            return true;
+        } else if (event.getAction() == MotionEvent.ACTION_UP) {
+            v.performClick();
+        }
+        return false;
     }
 
     public boolean onBackPressed() {
@@ -245,5 +271,7 @@ public class Toaster implements View.OnClickListener {
         void onPositiveClick();
 
         void onNegativeClick();
+
+        void onOutOfTheBoundClick();
     }
 }

@@ -85,6 +85,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void onOutOfTheBoundClick() {
+        Log.d("TAG", "onOutOfTheBoundClick");
+        mToaster.hide();
+    }
+
+    @Override
     public void onBackPressed() {
         if (mToaster == null || mToaster.onBackPressed()) {
             super.onBackPressed();
