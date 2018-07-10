@@ -200,7 +200,6 @@ public class Toaster implements
             return true;
         } else if (id == R.id.dialogLayout) {
             mCallback.get().onOutOfTheBoundClick();
-            mCallback = null;
             return true;
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
             v.performClick();
