@@ -24,7 +24,7 @@ public class Toaster implements
     private static final int TOAST_ANIM_DURATION = 600;
     private static final int TOAST_TIME_TO_SHOW = 700;
     public static final int DIALOG_ANIM_DURATION = 500;
-    private static boolean sVisible;
+    private boolean isVisible;
 
     private String mTitle;
     private String mText;
@@ -111,11 +111,11 @@ public class Toaster implements
 
     public void show() {
         Activity activity = mWeakActivity.get();
-        if (sVisible || activity == null) {
+        if (isVisible || activity == null) {
             return;
         }
 
-        sVisible = true;
+        isVisible = true;
 
         mLayout = LayoutInflater.from(activity).inflate(mDefaultLayout, null);
         Button btnPositive = mLayout.findViewById(R.id.btnPositive);
@@ -148,11 +148,12 @@ public class Toaster implements
     }
 
     public void hide() {
+        mCallback = null;
         Activity activity = mWeakActivity.get();
         if (activity == null) {
             return;
         }
-        sVisible = false;
+        isVisible = false;
         final ContentFrameLayout contentFrameLayout = activity.findViewById(android.R.id.content);
         ObjectAnimator fadeOut = ObjectAnimator.ofFloat(mLayout, "alpha", 1f, 0f);
         fadeOut.setDuration(mAnimationDuration);
@@ -165,8 +166,8 @@ public class Toaster implements
         fadeOut.start();
     }
 
-    public static boolean isVisible() {
-        return sVisible;
+    public boolean isVisible() {
+        return isVisible;
     }
 
     @Override
@@ -208,7 +209,7 @@ public class Toaster implements
     }
 
     public boolean onBackPressed() {
-        if (sVisible) {
+        if (isVisible) {
             hide();
             return false;
         } else {
