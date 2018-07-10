@@ -177,15 +177,15 @@ public class Toaster implements
         }
         int id = view.getId();
         if (id == R.id.btnPositive) {
-            hide();
             if (mCallback.get() != null) {
                 mCallback.get().onPositiveClick();
             }
-        } else if (id == R.id.btnNegative) {
             hide();
+        } else if (id == R.id.btnNegative) {
             if (mCallback.get() != null) {
                 mCallback.get().onNegativeClick();
             }
+            hide();
         }
         mCallback = null;
     }
