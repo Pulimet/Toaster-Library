@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    compile 'net.alexandroid.utils:toaster:2.0.1'
+    compile 'net.alexandroid.utils:toaster:2.0.2'
 }
 ```
 
@@ -22,6 +22,7 @@ dependencies {
 
 
 # Release notes
+* 2.0.2 - Inflater issue solved 
 * 2.0.1 - Added onOutOfTheBoundClick callBack, exposed isVisible() method, bug fix, animation time changes
 * 1.4 - Handle animation off issue (Thanks to [@kamilj](https://github.com/kamilj))
 * 1.3 - Custom toast layout support

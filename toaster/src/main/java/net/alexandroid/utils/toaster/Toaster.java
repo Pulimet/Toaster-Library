@@ -117,7 +117,8 @@ public class Toaster implements
 
         isVisible = true;
 
-        mLayout = LayoutInflater.from(activity).inflate(mDefaultLayout, null);
+        //mLayout = LayoutInflater.from(activity).inflate(mDefaultLayout, null);
+        mLayout = activity.getLayoutInflater().inflate(mDefaultLayout, null);
         Button btnPositive = mLayout.findViewById(R.id.btnPositive);
         Button btnNegative = mLayout.findViewById(R.id.btnNegative);
 
