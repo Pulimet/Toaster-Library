@@ -173,7 +173,7 @@ public class Toaster implements
 
     @Override
     public void onClick(View view) {
-        if (mCallback == null) {
+        if (mCallback == null || mCallback.get() == null) {
             return;
         }
         int id = view.getId();
@@ -193,7 +193,7 @@ public class Toaster implements
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if (mCallback == null) {
+        if (mCallback == null || mCallback.get() == null) {
             return true;
         }
 
