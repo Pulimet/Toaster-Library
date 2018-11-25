@@ -64,7 +64,9 @@ public class Toaster implements
         layout.setLayoutParams(params);
 
         final ContentFrameLayout contentFrameLayout = ((Activity) context).findViewById(android.R.id.content);
-        contentFrameLayout.addView(layout);
+        if (contentFrameLayout != null) {
+            contentFrameLayout.addView(layout);
+        }
 
         float systemAnimationsDuration = getSystemAnimationsDuration(context); // 0.0 => 1.0
         int animDuration = Math.round(animationDuration * systemAnimationsDuration);
@@ -80,7 +82,9 @@ public class Toaster implements
             fadeOut.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    contentFrameLayout.removeView(layout);
+                    if (contentFrameLayout != null) {
+                        contentFrameLayout.removeView(layout);
+                    }
                 }
             });
             fadeOut.start();
@@ -88,7 +92,9 @@ public class Toaster implements
             layout.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    contentFrameLayout.removeView(layout);
+                    if (contentFrameLayout != null) {
+                        contentFrameLayout.removeView(layout);
+                    }
                 }
             }, visibleDuration);
         }
@@ -142,8 +148,10 @@ public class Toaster implements
                 FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
         mLayout.setLayoutParams(params);
 
-        final ContentFrameLayout ContentFrameLayout = activity.findViewById(android.R.id.content);
-        ContentFrameLayout.addView(mLayout);
+        final ContentFrameLayout contentFrameLayout = activity.findViewById(android.R.id.content);
+        if (contentFrameLayout != null) {
+            contentFrameLayout.addView(mLayout);
+        }
 
         ObjectAnimator.ofFloat(mLayout, "alpha", 0f, 1f).setDuration(mAnimationDuration).start();
     }
@@ -161,7 +169,9 @@ public class Toaster implements
         fadeOut.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                contentFrameLayout.removeView(mLayout);
+                if (contentFrameLayout != null) {
+                    contentFrameLayout.removeView(mLayout);
+                }
             }
         });
         fadeOut.start();

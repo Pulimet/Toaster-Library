@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    compile 'net.alexandroid.utils:toaster:2.0.3'
+    compile 'net.alexandroid.utils:toaster:2.0.4'
 }
 ```
 
